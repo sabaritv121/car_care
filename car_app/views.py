@@ -1,13 +1,21 @@
 from django.shortcuts import render,redirect
-from car_app.forms import LoginRegister,EmployeeRegister
+from car_app.models import Login
+from car_app.forms import LoginRegister
 from django.views import View
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.views.generic import FormView
+from django.urls import reverse_lazy
 
 # Create your views here.
-def home(request):
-    return render(request,'home.html')
+# def home(request):
+#     return render(request,'home.html')
 
+class home(View):
+    def get(self,request):
+        return render(request,'home.html')
+        
+    
 def Login_view(request):
     return render(request,'login.html')
 
@@ -15,56 +23,61 @@ def Login_view(request):
 
 
 
-def user_add(request):
-    form1=LoginRegister()
-    print("hi")
-    if request.method =='POST':
-         form1 = LoginRegister(request.POST)
+
+
+
+
+
+class UserAddView(View):
+    template_name = 'login.html'
+    form_class = LoginRegister
+
+    def get(self, request):
+        form = self.form_class() 
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            u = form.save(commit=False)
+            u.is_user = True
+            u.save()
+            return redirect('home')
+        else:
+            username = request.POST.get('uname')
+            password = request.POST.get('pass')
+            user = authenticate(request, username=username, password=password)
+                
+            if user is not None:
+                login(request, user)
+            if user.is_staff:
+                return redirect('employeeadd')
+            elif user.is_user:
+                return redirect('home')
+        return render(request, self.template_name, {'form': form})
+
+
+
+
+ ## user list   
+
+class UserListView(View):
+    
+    def get(self, request):
+        data = Login.objects.filter(is_user=True)
+        return render(request, 'admn/userlist.html',{'data': data})
         
 
-         if form1.is_valid():
-                print("hi")
-                u= form1.save(commit=False)
-                print("k")
-                u.is_user = True
-                u.save()
-                print("ok")
-                
-                return redirect('home')
-
-         else :
-                username = request.POST.get('uname')
-                password = request.POST.get('pass')
-                user = authenticate(request, username=username, password=password)
-                if user is not None:
-                    login(request, user)
-                if user.is_staff:
-                    return redirect('admn')   
-                if user.is_user:
-                    return redirect('home')    
-                
-
-    return render(request,'login.html', {'form1': form1})
-
-
-def admn(request):
-    return render (request,'admn/dashboard.html')
+class EmployeeList(View):
+     def get(self,request):
+        data = Login.objects.filter(is_employee = True)
+        return render(request,'admn/emplist.html',{'data':data})
 
 
 
-# def employee_add(request):
-#     form1=EmployeeRegister()
-#     if request.method =='POST':
-#          form1 = LoginRegister(request.POST)
+#delete
 
-#          if form1.is_valid():
-#                 user = form1.save(commit=False)
-#                 user.is_user = True
-#                 user.save()
-                
-#                 return redirect('home')
-
-#     return render(request, 'login.html', {'form1': form1})
-
-
-
+def delete_user_view(request,user_id):
+    wm=Login.objects.get(user_id=user_id)
+    wm.delete()
+    return redirect('UserListView')
