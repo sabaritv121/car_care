@@ -1,11 +1,12 @@
 from django.shortcuts import render,redirect
-from car_app.models import Login
-from car_app.forms import LoginRegister
+from car_app.models import Login,AppointmentSchedule
+from car_app.forms import LoginRegister,ScheduleAdd
 from django.views import View
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.views.generic import FormView
 from django.urls import reverse_lazy
+from django.http import JsonResponse
 
 # Create your views here.
 # def home(request):
@@ -42,7 +43,8 @@ class UserAddView(View):
             u = form.save(commit=False)
             u.is_user = True
             u.save()
-            return redirect('home')
+            return JsonResponse("True",safe=False)
+            # return redirect('home')
         else:
             username = request.POST.get('uname')
             password = request.POST.get('pass')
@@ -50,14 +52,23 @@ class UserAddView(View):
                 
             if user is not None:
                 login(request, user)
-            if user.is_staff:
-                return redirect('employeeadd')
-            elif user.is_user:
-                return redirect('home')
+                if user.is_staff:
+                    return redirect('employeeadd')
+                elif user.is_user:
+                    return redirect('home')
         return render(request, self.template_name, {'form': form})
 
 
+#username exist
 
+def username_exists(request):
+    username = request.GET.get('username', None)
+    print(username)
+
+    data = {
+        'is_taken': Login.objects.filter(username__iexact=username).exists()
+    }
+    return JsonResponse(data)
 
  ## user list   
 
@@ -69,7 +80,7 @@ class UserListView(View):
         
 
 class EmployeeList(View):
-     def get(self,request):
+     def post(self,request):
         data = Login.objects.filter(is_employee = True)
         return render(request,'admn/emplist.html',{'data':data})
 
@@ -77,7 +88,39 @@ class EmployeeList(View):
 
 #delete
 
-def delete_user_view(request,user_id):
-    wm=Login.objects.get(user_id=user_id)
+def delete_user_view(request,id):
+    wm=Login.objects.get(id=id)
     wm.delete()
-    return redirect('UserListView')
+    return redirect('userlist')
+
+
+
+## schedule_add
+
+def schedule_add(request):
+    
+   
+    form = ScheduleAdd()
+    if request.method == 'POST':
+        form = ScheduleAdd(request.POST)
+        if form.is_valid():
+            form.save()
+            
+       
+            return JsonResponse('True',safe=False)
+        
+            # messages.info(request, ' Schedule Added Successfully')
+        #  return redirect('schedule_add')
+    # else:
+    #     form = ScheduleAdd()
+    return render(request, 'admn/schedule_add.html', {'form': form,'read':read})    
+
+  
+
+#schedule view
+# 
+def read(request):
+    read = AppointmentSchedule.objects.order_by('-id')
+    context = {'read':read}
+    return render(request, 'admn/result1.html', context)
+  

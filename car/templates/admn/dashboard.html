@@ -390,9 +390,7 @@
               {% comment %} <span class="menu-title">Dashboard</span> {% endcomment %}
               {% comment %} <div class="badge badge-danger">Empolyee register</div> {% endcomment %}
 
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleMod">
-                Add Employee +
-              </button>
+              
             {% comment %} </a>
           </li> {% endcomment %}
 
@@ -428,7 +426,7 @@
             </a>
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% static 'admin/template/pages/tables/basic-table.html' %}">Basic table</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'schedule_add' %}">Add schedules</a></li>
               </ul>
             </div>
           </li>
@@ -783,108 +781,8 @@
   <!-- End custom js for this page-->
 
 
-  <div class="modal fade" id="exampleMod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">REGISTER</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-         {% comment %} form {% endcomment %}
-         <form id = 'EmployeeRegister'>
-            {% csrf_token %}
+ 
 
-
-         {{form|crispy}}
-          
-        <div class=" forget">
-           <br>
-
-         <button type= "submit" class="btn btn-success w-100 btn-sm">Sign Up</button>
-         {% comment %} <button type="submit"> submit </button> {% endcomment %}
-
-        </form>
-
-       
-
-
-
-        <script>
-            $(document).ready(function() {
-              $('#EmployeeRegister').submit(function(event) {
-                // Validate the form before submitting
-                if (!validateForm()) {
-                  event.preventDefault(); // Prevent the form from submitting normally
-                  return false;
-                }
-                else {
-                  $.ajax({
-                    type: 'post', // Get the form's method attribute
-                    url: 'employeeadd', // Get the form's action attribute
-                    data: $(this).serialize(), // Serialize the form data
-                    success: function(response) {
-                      // Handle the server's response here
-                      alert('Form submitted successfully!');
-                    },
-                    error: function(xhr, status, error) {
-                      // Handle errors here
-                      alert('An error occurred while submitting the form.');
-                      console.error(xhr.responseText);
-                    }
-                  });
-                }
-              });
-          
-              function validateForm() {
-                // Get the form inputs
-                var username = $('#id_username').val().trim();
-                var password1 = $('#id_password1').val().trim();
-                var password2 = $('#id_password2').val().trim();
-                var phone = $('#id_phone_number').val().trim();
-          
-                // Check for empty fields
-                if (username === '' || password1 === '' || password2 === ''  || phone === '') {
-                  alert('Please fill in all fields.');
-                  return false;
-                }
-          
-                // Check that passwords match
-                if (password1 !== password2) {
-                  alert('Passwords do not match.');
-                  return false;
-                }
-          
-                // Check password length
-                if (password1.length < 8) {
-                  alert('Password must be at least 8 characters long.');
-                  return false;
-                }
-          
-                // Check username length
-                if (username.length < 4 || username.length > 20) {
-                  alert('Username must be between 4 and 20 characters long.');
-                  return false;
-                }
-          
-                // Check phone number format
-                if (!isValidPhoneNumber(phone)) {
-                  alert('Please enter a valid phone number.');
-                  return false;
-                }
-          
-                return true;
-              }
-          
-              function isValidPhoneNumber(phone) {
-                // Regular expression for phone number validation
-                var phoneRegex = /^[0-9]{10}$/;
-                return phoneRegex.test(phone);
-              }
-            });
-          </script>
         </div>
          </div>
      </div>
@@ -896,3 +794,5 @@
 
 </html>
 
+
+                  

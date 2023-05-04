@@ -16,16 +16,22 @@ urlpatterns = [
     path('employeeadd', admin_views.EmployeeAddView.as_view(), name='employeeadd'),
     path('userlist', views.UserListView.as_view(), name='userlist'),
     path('EmployeeList',views.EmployeeList.as_view(),name='EmployeeList'),
-    path('delete-wm/<int:user_id>/', views.delete_user_view, name='delete-wm'),
+    path('delete-wm/<int:id>/', views.delete_user_view, name='delete-wm'),
+
+    path('username_exists', views.username_exists, name='username_exists'),
+    path('schedule_add',views.schedule_add,name = 'schedule_add'),
+    path('read',views.read,name='read'),
 
 
 
-    #employee
+    # employee
 
 
 
     #user
      path('UserAddView',views.UserAddView.as_view(), name='UserAddView'),
+
+
 
 
 

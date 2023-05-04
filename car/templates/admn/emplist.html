@@ -1,9 +1,9 @@
 
 
-{% extends 'admn/dashboard.html'%}
+{% comment %} {% extends 'admn/dashboard.html'%}
 
-{% load crispy_forms_filters %}
-{% block content %}
+{% load crispy_forms_filters %} {% endcomment %}
+{% comment %} {% block content %} {% endcomment %}
 
 <div class="col-lg-10">
     {% for message in messages %}
@@ -85,4 +85,4 @@ window.mytest = function()
 { var isValid = confirm('Are you sure Want to Delete ?');if (!isValid) { event.preventDefault();
   }}
 
-{% endblock %}
+{% comment %} {% endblock %} {% endcomment %}

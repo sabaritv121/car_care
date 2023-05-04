@@ -61,10 +61,10 @@
 <!--                    </td>-->
 
                     <td>
-                        <form action="{% url 'delete-wm' n.user_id %}" method="post" style="display: inline;"
+                        <form action="{% url 'delete-wm' n.id %}" method="post" style="display: inline;"
                               onsubmit="window.mytest()">
                             {% csrf_token %}
-                            <input type="hidden" value="{{ n.user_id }}"/>
+                            <input type="hidden" value="{{ n.id }}"/>
                             <button type="submit" class="btn btn-danger waves-effect width-md waves-light">Delete
                             </button>
                         </form>

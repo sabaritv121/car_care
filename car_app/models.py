@@ -8,3 +8,10 @@ class Login(AbstractUser):
     name = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=10)
     emp_id = models.CharField(max_length=10)
+
+
+
+class AppointmentSchedule(models.Model):
+    date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()    
