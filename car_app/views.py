@@ -7,6 +7,9 @@ from django.contrib import messages
 from django.views.generic import FormView
 from django.urls import reverse_lazy
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt 
+from django.views.generic.edit import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 # def home(request):
@@ -15,6 +18,14 @@ from django.http import JsonResponse
 class home(View):
     def get(self,request):
         return render(request,'home.html')
+
+
+class base(View):
+  
+    redirect_field_name = "redirect_to"
+    def get(salf,request):
+        return render(request,'admn/base.html')
+
         
     
 def Login_view(request):
@@ -56,21 +67,26 @@ class UserAddView(View):
                     return redirect('employeeadd')
                 elif user.is_user:
                     return redirect('home')
+                elif user.is_employee:
+                    return redirect('emp_base')    
         return render(request, self.template_name, {'form': form})
 
 
 #username exist
-
+@csrf_exempt
 def username_exists(request):
-    username = request.GET.get('username', None)
-    print(username)
-
-    data = {
-        'is_taken': Login.objects.filter(username__iexact=username).exists()
-    }
-    return JsonResponse(data)
-
- ## user list   
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        print(username)
+        u=Login.objects.filter(username=username).exists()
+        print("ys")
+        if u == True:
+            print("ysss")
+            return JsonResponse({'exists': True})
+        else:
+            print("noo")
+            return JsonResponse({'exists': False})
+#  ## user list   
 
 class UserListView(View):
     
@@ -82,6 +98,7 @@ class UserListView(View):
 class EmployeeList(View):
      def post(self,request):
         data = Login.objects.filter(is_employee = True)
+    
         return render(request,'admn/emplist.html',{'data':data})
 
 
@@ -97,28 +114,38 @@ def delete_user_view(request,id):
 
 ## schedule_add
 
-def schedule_add(request):
+# def schedule_add(request):
     
    
-    form = ScheduleAdd()
-    if request.method == 'POST':
-        form = ScheduleAdd(request.POST)
-        if form.is_valid():
-            form.save()
+#     form = ScheduleAdd()
+#     if request.method == 'POST':
+#         form = ScheduleAdd(request.POST)
+#         if form.is_valid():
+#             form.save()
             
        
-            return JsonResponse('True',safe=False)
+#             return JsonResponse('True',safe=False)
         
-            # messages.info(request, ' Schedule Added Successfully')
-        #  return redirect('schedule_add')
-    # else:
-    #     form = ScheduleAdd()
-    return render(request, 'admn/schedule_add.html', {'form': form,'read':read})    
+#             # messages.info(request, ' Schedule Added Successfully')
+#         #  return redirect('schedule_add')
+#     # else:
+#     #     form = ScheduleAdd()
+#     return render(request, 'admn/schedule_add.html', {'form': form,'read':read})    
 
-  
+class ScheduleAddView(CreateView):
+    
+    template_name = 'admn/schedule_add.html'
+    form_class = ScheduleAdd
+    success_url = reverse_lazy('ScheduleAddView') # replace 'success' with your success URL name or URL path
+
+    def form_valid(self,form):
+        form.save()
+        return JsonResponse('True',safe=False)
+
+
+
 
 #schedule view
-# 
 def read(request):
     read = AppointmentSchedule.objects.order_by('-id')
     context = {'read':read}

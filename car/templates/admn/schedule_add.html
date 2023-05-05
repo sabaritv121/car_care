@@ -70,7 +70,7 @@
                
                     $.ajax({
                       type: 'post', // Get the form's method attribute
-                      url: 'schedule_add', // Get the form's action attribute
+                      url: 'ScheduleAddView', // Get the form's action attribute
                       data: $(this).serialize(), // Serialize the form data
                       success: function(response) {
                         if (response !== 'True') {

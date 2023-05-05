@@ -414,7 +414,7 @@
             </a>
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'EmployeeList' %}">View</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'employeeadd' %}">View</a></li>
               </ul>
             </div>
           </li>
@@ -426,7 +426,7 @@
             </a>
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'schedule_add' %}">Add schedules</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'ScheduleAddView' %}">Add schedules</a></li>
               </ul>
             </div>
           </li>
@@ -764,20 +764,20 @@
   <!-- container-scroller -->
 
   <!-- base:js -->
-  <script src="{% static 'admin/template/vendors/js/vendor.bundle.base.js' %}"></script>
+  {% comment %} <script src="{% static 'admin/template/vendors/js/vendor.bundle.base.js' %}"></script> {% endcomment %}
   <!-- endinject -->
   <!-- Plugin js for this page-->
-  <script src="{% static 'admin/template/vendors/chart.js/Chart.min.js' %}"></script>
+  {% comment %} <script src="{% static 'admin/template/vendors/chart.js/Chart.min.js' %}"></script> {% endcomment %}
   <!-- End plugin js for this page-->
   <!-- inject:js -->
-  <script src="{% static 'admin/template/js/off-canvas.js' %}"></script>
+  {% comment %} <script src="{% static 'admin/template/js/off-canvas.js' %}"></script>
   <script src="{% static 'admin/template/js/hoverable-collapse.js' %}"></script>
   <script src="{% static 'admin/template/js/template.js' %}"></script>
   <script src="{% static 'admin/template/js/settings.js' %}"></script>
-  <script src="{% static 'admin/template/js/todolist.js' %}"></script>
+  <script src="{% static 'admin/template/js/todolist.js' %}"></script> {% endcomment %}
   <!-- endinject -->
   <!-- Custom js for this page-->
-  <script src="{% static 'admin/template/js/dashboard.js' %}"></script>
+  {% comment %} <script src="{% static 'admin/template/js/dashboard.js' %}"></script> {% endcomment %}
   <!-- End custom js for this page-->
 
 
