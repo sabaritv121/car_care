@@ -5,6 +5,8 @@
             <th>end time</th>
             <th>date</th>
 
+            <th>Enable/disable</th>
+
            
         </tr>
     </thead>
@@ -14,8 +16,16 @@
             <td>{{ i.start_time }}</td>
             <td>{{ i.end_time }}</td>
             <td>{{ i.date }}</td>
-
-
+          <td>
+            <button class="toggle-active-btn" data-category-id="{{ i.id }}" data-csrf-token="{{ csrf_token }}">
+              {% if i.is_active %}
+               Enable
+              {% else %}
+              Disable
+              {% endif %}
+            </button>
+          </td>
+          
             {% comment %} <td><center>
                 <a class="btn btn-warning edit" name="{{ i.id }}">Edit</a> {% endcomment %}
 
@@ -49,7 +59,11 @@
                       </div> 
                   </form> {% endcomment %}
 
+
+                  
                
         {% endfor %}
+
+
     </tbody>
 </table>

@@ -66,7 +66,7 @@ class UserAddView(View):
                 if user.is_staff:
                     return redirect('employeeadd')
                 elif user.is_user:
-                    return redirect('home')
+                    return redirect('Schedules_user')
                 elif user.is_employee:
                     return redirect('emp_base')    
         return render(request, self.template_name, {'form': form})
@@ -88,15 +88,22 @@ def username_exists(request):
             return JsonResponse({'exists': False})
 #  ## user list   
 
-class UserListView(View):
+class UserListView(LoginRequiredMixin,View):
+    login_url = 'home'
+    redirect_field_name = 'home'
+    raise_exception = True
     
     def get(self, request):
         data = Login.objects.filter(is_user=True)
         return render(request, 'admn/userlist.html',{'data': data})
         
 
-class EmployeeList(View):
-     def post(self,request):
+class EmployeeList(LoginRequiredMixin,View):
+    login_url = 'home'
+    redirect_field_name = 'home'
+    raise_exception = True
+
+    def post(self,request):
         data = Login.objects.filter(is_employee = True)
     
         return render(request,'admn/emplist.html',{'data':data})
@@ -108,7 +115,7 @@ class EmployeeList(View):
 def delete_user_view(request,id):
     wm=Login.objects.get(id=id)
     wm.delete()
-    return redirect('userlist')
+    return redirect('employeeadd')
 
 
 
@@ -132,22 +139,18 @@ def delete_user_view(request,id):
 #     #     form = ScheduleAdd()
 #     return render(request, 'admn/schedule_add.html', {'form': form,'read':read})    
 
-class ScheduleAddView(CreateView):
+# class ScheduleAddView(CreateView):
     
-    template_name = 'admn/schedule_add.html'
-    form_class = ScheduleAdd
-    success_url = reverse_lazy('ScheduleAddView') # replace 'success' with your success URL name or URL path
+#     template_name = 'admn/schedule_add.html'
+#     form_class = ScheduleAdd
+#     success_url = reverse_lazy('ScheduleAddView') # replace 'success' with your success URL name or URL path
 
-    def form_valid(self,form):
-        form.save()
-        return JsonResponse('True',safe=False)
-
-
+#     def form_valid(self,form):
+#         form.save()
+#         return JsonResponse('True',safe=False)
 
 
-#schedule view
-def read(request):
-    read = AppointmentSchedule.objects.order_by('-id')
-    context = {'read':read}
-    return render(request, 'admn/result1.html', context)
+
+
+
   

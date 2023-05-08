@@ -1,0 +1,78 @@
+{% extends 'user/base_a.html'%}
+
+{% block content %}
+<button type="button" href="#" class="btn btn-danger" >
+    button
+  </button>
+
+ 
+<table class="table table-bordered">
+    <thead class="alert-success">
+        <tr>
+            <th>start time</th>
+            <th>end time</th>
+            <th>date</th>
+            <th>Book Appointment </th>
+
+           
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in data %}
+        <tr>
+            <td>{{ i.start_time }}</td>
+            <td>{{ i.end_time }}</td>
+            <td>{{ i.date }}</td>
+            <td>
+                 <!-- Button to trigger the modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#appointmentModal">
+    Book Appointment
+  </button></td>
+
+            
+            
+
+          
+               
+        {% endfor %}
+
+
+        
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="appointmentModalLabel">Book Appointment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="appointmentForm" action="#" method="post">
+          {% csrf_token %}
+          <div class="modal-body">
+            <label for="name">starttime:</label>
+            <input type="text" name="name" id="name" class="form-control">
+            <label for="email">endtime:</label>
+            <input type="email" name="email" id="email" class="form-control">
+            <label for="email">date:</label>
+            <input type="email" name="email" id="email" class="form-control">
+            <input type="hidden" name="schedule_id" value="{{ schedule.id }}">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Book Appointment</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  
+       
+    </tbody>
+</table>
+
+{% endblock %}

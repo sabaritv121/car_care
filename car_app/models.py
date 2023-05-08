@@ -14,4 +14,12 @@ class Login(AbstractUser):
 class AppointmentSchedule(models.Model):
     date = models.DateField()
     start_time = models.TimeField()
-    end_time = models.TimeField()    
+    end_time = models.TimeField()  
+    is_active = models.BooleanField(default=True)  
+
+
+
+class Appointment(models.Model):
+    user = models.ForeignKey(Login, on_delete=models.CASCADE, related_name='appointment')
+    schedule = models.ForeignKey(AppointmentSchedule, on_delete=models.CASCADE)
+    status = models.IntegerField(default=0)    

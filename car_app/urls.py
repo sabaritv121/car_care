@@ -1,4 +1,4 @@
-from car_app import views,admin_views,employee_views
+from car_app import views,admin_views,employee_views,user_views
 from django.urls import path
 
 
@@ -18,12 +18,13 @@ urlpatterns = [
     path('userlist', views.UserListView.as_view(), name='userlist'),
     path('EmployeeList',views.EmployeeList.as_view(),name='EmployeeList'),
     path('delete-wm/<int:id>/', views.delete_user_view, name='delete-wm'),
+    path('category/<int:category_id>/toggle-active/', admin_views.toggle_category_active, name='toggle_category_active'),
 
     path('username_exists', views.username_exists, name='username_exists'),
     # path('schedule_add',views.schedule_add,name = 'schedule_add'),
-    path('read',views.read,name='read'),
-    path("ScheduleAddView",views.ScheduleAddView.as_view(),name='ScheduleAddView'),
-
+    path('read',admin_views.read,name='read'),
+    path("ScheduleAddView",admin_views.ScheduleAddView.as_view(),name='ScheduleAddView'),
+    path("my_logout_view",admin_views.my_logout_view.as_view(),name='my_logout_view'),
 
 
     # employee
@@ -34,6 +35,9 @@ urlpatterns = [
 
     #user
      path('UserAddView',views.UserAddView.as_view(), name='UserAddView'),
+     path("user_base",user_views.user_base.as_view(),name='user_base'),
+     path("Schedules_user",user_views.Schedules_user.as_view(),name='Schedules_user'),
+     path('take_appointment/<int:id>/',user_views.take_appointment,name = 'take_appointment')
      
 
 

@@ -9,12 +9,17 @@ from car_app.models import AppointmentSchedule
 
 
 class Emp_base(LoginRequiredMixin,View):
-    login_url = "home"
+    login_url = 'home'
+    redirect_field_name = 'home'
+    raise_exception = True
     def get(self,request):
         return render(request,'employee/base.html')
 
 
-class Schedules(ListView):
+class Schedules(LoginRequiredMixin,ListView):
+    login_url = 'home'
+    redirect_field_name = 'home'
+    raise_exception = True
     def get(self,request):
         data = AppointmentSchedule.objects.all()
         return render(request,'employee/emp_schedule.html',{'data':data})

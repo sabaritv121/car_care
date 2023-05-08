@@ -61,8 +61,8 @@
 <!--                    </td>-->
 
                     <td>
-                        <form action="#" method="post" style="display: inline;"
-                              onsubmit="window.mytest()">
+                        <form action="{% url 'delete-wm' n.id %}" style="display: inline;"
+                              onsubmit="window.mytest()" method="post" >
                             {% csrf_token %}
                             <input type="hidden" value="{{ n.user_id }}"/>
                             <button type="submit" class="btn btn-danger waves-effect width-md waves-light">Delete
@@ -83,6 +83,6 @@
 <script type="text/javascript">
 window.mytest = function()
 { var isValid = confirm('Are you sure Want to Delete ?');if (!isValid) { event.preventDefault();
-  }}
-
-{% comment %} {% endblock %} {% endcomment %}
+  }
+}
+</script>
