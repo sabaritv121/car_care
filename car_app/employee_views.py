@@ -5,7 +5,8 @@ from car_app.forms import EmployeeRegister
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from car_app.models import AppointmentSchedule
+from car_app.models import AppointmentSchedule,Appointment
+from django.http import  JsonResponse
 
 
 class Emp_base(LoginRequiredMixin,View):
@@ -21,6 +22,29 @@ class Schedules(LoginRequiredMixin,ListView):
     redirect_field_name = 'home'
     raise_exception = True
     def get(self,request):
-        data = AppointmentSchedule.objects.all()
+        data = Appointment.objects.all()
+       
         return render(request,'employee/emp_schedule.html',{'data':data})
 
+
+
+
+
+def approve_appointment(request, id):
+
+    appointment = Appointment.objects.get(id=id)
+    print(appointment)
+    print("ok")
+    appointment.status = 1
+    appointment.save()
+    return JsonResponse({'status': 'success'})
+
+
+class AcceptedSchedules(LoginRequiredMixin,ListView):
+    login_url = 'home'
+    redirect_field_name = 'home'
+    raise_exception = True
+    def get(self,request):
+        data = Appointment.objects.filter(status=1)
+       
+        return render(request,'employee/emp_accepted.html',{'data':data})

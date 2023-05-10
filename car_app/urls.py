@@ -30,6 +30,11 @@ urlpatterns = [
     # employee
     path("emp_base",employee_views.Emp_base.as_view(),name='emp_base'),
     path('Schedules',employee_views.Schedules.as_view(),name='Schedules'),
+    path('AcceptedSchedules',employee_views.AcceptedSchedules.as_view(),name='AcceptedSchedules'),
+    # path('approve_appointment/<int:id>/',employee_views.approve_appointment, name='approve_appointment'),
+    # path('approve_appointment/<int:id>/', employee_views.approve_appointment, name='approve_appointment'),
+    path('approve_appointment/<int:id>/', employee_views.approve_appointment, name='approve_appointment'),
+
 
 
 
@@ -37,7 +42,9 @@ urlpatterns = [
      path('UserAddView',views.UserAddView.as_view(), name='UserAddView'),
      path("user_base",user_views.user_base.as_view(),name='user_base'),
      path("Schedules_user",user_views.Schedules_user.as_view(),name='Schedules_user'),
-     path('take_appointment/<int:id>/',user_views.take_appointment,name = 'take_appointment')
+     path('take_appointment/<int:id>/', user_views.TakeAppointmentView.as_view(), name='take_appointment'),
+     path('appointments', user_views.AppointmentListView.as_view(), name='appointments'),
+]
      
 
 
@@ -46,4 +53,3 @@ urlpatterns = [
 
 
     
-]

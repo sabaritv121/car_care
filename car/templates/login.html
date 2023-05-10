@@ -49,7 +49,11 @@
                                <div class="form-row">
 
                                    <input placeholder="Enter Password" name = 'pass' class="form-control form-control-sm" type="password">
+                                  
                                </div>
+                            
+
+
 
                                 <div class=" forget">
 
@@ -180,11 +184,11 @@
             
             $('#LoginRegister').validate({
               rules: {
-                username: {
+              username: {
                   required: true,
                   minlength: 4,
                   maxlength: 20,
-                  {% comment %} remote: {
+                  remote: { 
                     url: 'username_exists', // The URL to check if the username already exists
                     type: 'post',
                     data: {
@@ -192,8 +196,10 @@
                         return $('#id_username').val();
                       }
                     }
-                  } {% endcomment %}
-                },
+                  } 
+                }, 
+
+                
                 password1: {
                   required: true,
                   minlength: 8,
@@ -215,7 +221,7 @@
                   required: 'Please enter a username.',
                   minlength: 'Username must be at least 4 characters long.',
                   maxlength: 'Username must be at most 20 characters long.',
-                  {% comment %} remote: 'Username already exists. Please choose a different username.', // The message to display if the username already exists {% endcomment %}
+                  remote: 'Username already exists. Please choose a different username.', // The message to display if the username already exists 
                 },
                 password1: {
                   required: 'Please enter a password.',

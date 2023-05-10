@@ -33,9 +33,27 @@ def Login_view(request):
 
 
 
-
-
-
+# @csrf_exempt
+# def username_exists(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         print(username)
+#         u=Login.objects.filter(username=username).exists()
+#         print("ys")
+#         if u == True:
+#             print("ysss")
+#             return JsonResponse({'exists': True})
+#         else:
+#             print("noo")
+#             return JsonResponse({'exists': False})
+@csrf_exempt
+def username_exists(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        if Login.objects.filter(username=username).exists():
+            return JsonResponse({'valid': False})
+        else:
+            return JsonResponse({'valid': True})
 
 
 
@@ -73,19 +91,7 @@ class UserAddView(View):
 
 
 #username exist
-@csrf_exempt
-def username_exists(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        print(username)
-        u=Login.objects.filter(username=username).exists()
-        print("ys")
-        if u == True:
-            print("ysss")
-            return JsonResponse({'exists': True})
-        else:
-            print("noo")
-            return JsonResponse({'exists': False})
+
 #  ## user list   
 
 class UserListView(LoginRequiredMixin,View):

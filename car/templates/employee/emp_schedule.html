@@ -1,63 +1,247 @@
 {% extends 'employee/base.html'%}
-
 {% block content %}
+<div class="col-lg-10">
+  {% for message in messages %}
+  <div class="alert alert-primary" role="alert">
+      {{message}}
+  </div>
+  {% endfor %}
+  <div class="card">
+      <div class="card-header">
+          <strong class="card-title">WORK APPOINTMENTS </strong>
+      </div>
+      <br>
+<!--        <div class="row">-->
+<!--            <div class="col-lg-6 "></div>-->
+<!--            <div class="col-lg-6">-->
+<!--                <form method="get" class="form-inline " style="float:right;">-->
+<!--                    <div class="md-form my-0">-->
+<!--                        {{placeFilter.form }}-->
+<!--                        <button class="btn btn-primary mr-2" type="submit">Search</button>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
 
-<table class="table table-bordered">
-    <thead class="alert-success">
-        <tr>
-            <th>start time</th>
-            <th>end time</th>
-            <th>date</th>
-            <th>Accept/Reject</th>
+      <div class="card-body">
+          <table class="table table-striped">
+              <thead>
+              <tr>
+                  <th scope="col">SI No</th>
+                  <th scope="col">User</th>
+                  <th scope="col">Date</th>
 
-           
-        </tr>
-    </thead>
-    <tbody>
-        {% for i in data %}
-        <tr>
-            <td>{{ i.start_time }}</td>
-            <td>{{ i.end_time }}</td>
-            <td>{{ i.date }}</td>
-            
+                  <th scope="col">Start Time</th>
+                  <th scope="col">End Time</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">      </th>
 
 
-            {% comment %} <td><center>
-                <a class="btn btn-warning edit" name="{{ i.id }}">Edit</a> {% endcomment %}
+              </tr>
+              </thead>
+              <tbody>
+              {% for n in data %}
+              <tr>
+                  <th scope="row">{{forloop.counter}}</th>
+                  <td>{{n.user}}</td>
+                  <td>{{n.schedule.date}}</td>
 
-              {% comment %} <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1">
-                  edit
-                </button> 
-              
-              
-                <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">ADD</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body"> {% endcomment %}
-                     
-                        {% comment %} <form class="form-inline">
-                          {% csrf_token %}
-                           <div class="mb-2">
-                                <label>PRODUCT NAME</label>
-                                <input type="text" id="name"class="form-control" style="width:30%;" required="required"/>
-                            </div>     
-                              
-                            
-                        
-                         <div class="mb-3">    
-                          <button type="button" id="create" class="btn btn-primary">Update</button>
-                      </div> 
-                  </form> {% endcomment %}
+                  <td>{{n.schedule.start_time}}</td>
+                  <td>{{n.schedule.end_time}}</td>
+                  <td>
+                      {% if n.status == 0 %}
+                      <button class="approve" data-id="{{ n.id }}">Approve</button>
+                      {% comment %} <button type="button" class="btn btn-primary" onclick="approveAppointment({{ appointment.id }})">Approve</button> {% endcomment %}
 
-               
-        {% endfor %}
-    </tbody>
-</table>
+                       {% comment %} <form action="#" method="post" style="display: inline;"
+                            onsubmit="window.mytest()"> {% endcomment %}
+                          {% comment %} { {% csrf_token %}
+                          <input type="hidden" value="{{ n.id }}"/>
+                          <button class="btn btn-danger">Reject</Button>
+                      </form> {% endcomment %}
+                      {% elif n.status == 1 %}
+
+                      <button type="button" class="btn btn-success">Approved</button>
+
+            {% comment %} {% else %}
+                      <button type="button" class="btn btn-danger">Rejected</button> {% endcomment %}
+                   {% endif %} 
+                  {% comment %} </td>  {% endcomment %}
+              </tr>
+{% comment %} 
+              {% empty %} {% endcomment %}
+              {% comment %} <tr>
+                  <td colspan="7"><h3>No Results Found</h3></td>
+              </tr> {% endcomment %}
+              {% endfor %}
+              </tbody>
+          </table>
+      </div>
+  </div>
+</div>
+
+
+{% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> {% endcomment %}
+
+<!-- add jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- add a button to approve the appointment -->
+{% comment %} <button type="button" class="btn btn-primary" onclick="approveAppointment({{ appointment.id }})">Approve</button> {% endcomment %}
+
+<!-- add a script block to handle the AJAX call -->
+{% comment %} <script>
+function approveAppointment(id) {
+  $.ajax({
+    url: "'/approve_appointment/' + id ",
+    type: 'POST'
+    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+    success: function(response) {
+      // handle success response here
+      console.log(response);
+    },
+    error: function(response) {
+      // handle error response here
+      console.log(response);
+    }
+  });
+}
+</script> {% endcomment %}
+
+
+ <script>
+  
+ 
+  
+
+{% comment %} $(".approve").on("click", function() {
+    var appointment_id = $(this).data("id");
+    $.ajax({
+        url:  "approve_appointment/" + appointment_id + "/",
+        type: "POST",
+        data: {
+            id: appointment_id,
+            csrfmiddlewaretoken: "{{ csrf_token }}"
+        },
+        success: function(data) {
+            // Handle success
+            console.log(data.foo);
+        },
+        error: function(xhr, errmsg, err) {
+            // Handle error
+            console.log(xhr.status + ": " + xhr.responseText);
+        } 
+     
+    });
+});
+
+$.ajax({
+  url: 'Schedules',
+  type: 'GET',
+  success: function(response) {
+    // Handle success
+    console.log(response);
+  },
+  error: function(xhr, errmsg, err) {
+    // Handle error
+    console.log(xhr.status + ": " + xhr.responseText);
+  } 
+});
+   {% endcomment %}
+
+
+   {% comment %} 2222 {% endcomment %}
+
+   {% comment %} $(".approve").on("click", function() {
+    var appointment_id = $(this).data("id");
+    $.ajax({
+        url:  "approve_appointment/" + appointment_id + "/",
+        type: "POST",
+        data: {
+            id: appointment_id,
+            csrfmiddlewaretoken: "{{ csrf_token }}"
+        },
+        success: function(data) {
+            // Handle success of POST request
+            console.log(data.foo);
+
+            // Send GET request
+            $.ajax({
+                url: 'Schedules',
+                type: 'GET',
+                data: {
+                  
+                  csrfmiddlewaretoken: "{{ csrf_token }}"
+              },
+                success: function(response) {
+                    // Handle success of GET request
+                    console.log(response);
+                },
+                error: function(xhr, errmsg, err) {
+                    // Handle error of GET request
+                    console.log(xhr.status + ": " + xhr.responseText);
+                } 
+            });
+        },
+        error: function(xhr, errmsg, err) {
+            // Handle error of POST request
+            console.log(xhr.status + ": " + xhr.responseText);
+        } 
+    });
+}); {% endcomment %}
+{% comment %} 3333 {% endcomment %}
+
+function sendRequests() {
+  var appointment_id = $(this).data("id");
+  var button = $(this);
+
+  // Send POST request to approve_appointment endpoint
+  $.ajax({
+    url: "approve_appointment/" + appointment_id + "/",
+    type: "POST",
+    data: {
+      id: appointment_id,
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    },
+    success: function(data) {
+      // Handle success
+      console.log(data.foo);
+       {% comment %} button.text("Approved");  {% endcomment %}
+       button.removeClass('btn-primary');
+       button.addClass('btn-success');
+       button.text("Approved");
+      
+    },
+    error: function(xhr, errmsg, err) {
+      // Handle error
+      console.log(xhr.status + ": " + xhr.responseText);
+    } 
+  });
+
+  // Send GET request to Schedules endpoint
+  $.ajax({
+    url: "Schedules",
+    type: "GET",
+    success: function(response) {
+      // Handle success
+      console.log(response);
+    },
+    error: function(xhr, errmsg, err) {
+      // Handle error
+      console.log(xhr.status + ": " + xhr.responseText);
+    } 
+  });
+}
+
+$(".approve").on("click", sendRequests);
+
+</script> 
+
+
+
+
+
+
+
 
 {% endblock %}

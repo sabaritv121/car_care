@@ -1,14 +1,13 @@
 {% extends 'user/base_a.html'%}
 
 {% block content %}
-<button type="button" href="#" class="btn btn-danger" >
-    button
-  </button>
+
 
  
 <table class="table table-bordered">
     <thead class="alert-success">
         <tr>
+            <th>Sl No </th>
             <th>start time</th>
             <th>end time</th>
             <th>date</th>
@@ -20,45 +19,81 @@
     <tbody>
         {% for i in data %}
         <tr>
+          <td>{{forloop.counter}}
             <td>{{ i.start_time }}</td>
             <td>{{ i.end_time }}</td>
             <td>{{ i.date }}</td>
             <td>
+
+              <a href="{% url 'take_appointment' i.id %}">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#appointmentModal">
+                  Book Appointment
+                </button> 
                  <!-- Button to trigger the modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#appointmentModal">
+              
+ {% comment %} <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#appointmentModal">
     Book Appointment
-  </button></td>
+  </button> {% endcomment %}
+</td> 
 
             
-            
+
 
           
                
-        {% endfor %}
+{% endfor %}
+
+        {% for message in messages %}
+<div id="appointment-message" class="alert alert-primary" role="alert">
+    {{message}}
+</div>
+
+<script>
+  // Get the alert element by ID
+  const appointmentMessage = document.querySelector('#appointment-message');
+  
+  // Update the message text
+  function updateMessage(message) {
+      appointmentMessage.innerHTML = message;
+  }
+  
+  // Example usage
+  updateMessage('You have already requested an appointment for this schedule.');
+  
+  // Set a timeout to clear the message after a certain time period
+  setTimeout(() => {
+      updateMessage('');
+  }, 2000);  // Clear message after 5 seconds
+  
+  </script>
+
+ {% endfor %}
 
 
+  
+  
         
 
   
   <!-- Modal -->
-  <div class="modal fade" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+  {% comment %} <div class="modal fade" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="appointmentModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="appointmentModalLabel">Book Appointment</h5>
+          <h5 class="modal-title" id = "appointmentModalLabel">Book Appointment</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form id="appointmentForm" action="#" method="post">
+        <form id="ScheduleAdd" action="#" method="post">
           {% csrf_token %}
           <div class="modal-body">
             <label for="name">starttime:</label>
-            <input type="text" name="name" id="name" class="form-control">
+            <input type="text" name="start_time" id="start_time" class="form-control">
             <label for="email">endtime:</label>
-            <input type="email" name="email" id="email" class="form-control">
+            <input type="email" name="end_time" id="end_time" class="form-control">
             <label for="email">date:</label>
-            <input type="email" name="email" id="email" class="form-control">
+            <input type="email" name="date" id="date" class="form-control">
             <input type="hidden" name="schedule_id" value="{{ schedule.id }}">
           </div>
           <div class="modal-footer">
@@ -70,7 +105,7 @@
     </div>
   </div>
   
-  
+   {% endcomment %}
        
     </tbody>
 </table>

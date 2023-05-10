@@ -4,3 +4,4 @@ from car_app import models
 # Register your models here.
 admin.site.register(models.Login)
 admin.site.register(models.AppointmentSchedule)
+admin.site.register(models.Appointment)
