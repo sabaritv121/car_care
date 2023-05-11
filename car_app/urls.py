@@ -26,6 +26,9 @@ urlpatterns = [
     path("ScheduleAddView",admin_views.ScheduleAddView.as_view(),name='ScheduleAddView'),
     path("my_logout_view",admin_views.my_logout_view.as_view(),name='my_logout_view'),
 
+    #update
+    
+
 
     # employee
     path("emp_base",employee_views.Emp_base.as_view(),name='emp_base'),

@@ -108,3 +108,5 @@ def toggle_category_active(request, category_id):
     category.save()
     
     return JsonResponse({'status': 'success', 'is_active': category.is_active})
+
+

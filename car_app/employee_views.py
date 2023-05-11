@@ -5,8 +5,9 @@ from car_app.forms import EmployeeRegister
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from car_app.models import AppointmentSchedule,Appointment
+from car_app.models import AppointmentSchedule,Appointment,Login
 from django.http import  JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 class Emp_base(LoginRequiredMixin,View):
@@ -48,3 +49,6 @@ class AcceptedSchedules(LoginRequiredMixin,ListView):
         data = Appointment.objects.filter(status=1)
        
         return render(request,'employee/emp_accepted.html',{'data':data})
+
+
+

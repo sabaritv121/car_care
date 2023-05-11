@@ -50,10 +50,12 @@ def Login_view(request):
 def username_exists(request):
     if request.method == 'POST':
         username = request.POST['username']
+        print(username)
+        print("hi")
         if Login.objects.filter(username=username).exists():
-            return JsonResponse({'valid': False})
+            return JsonResponse({'exists': False})
         else:
-            return JsonResponse({'valid': True})
+            return JsonResponse({'exists': True})
 
 
 
@@ -196,4 +198,3 @@ def delete_user_view(request,id):
 
 
 
-  
