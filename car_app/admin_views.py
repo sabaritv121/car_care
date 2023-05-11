@@ -23,7 +23,7 @@ class base(View):
 
 class my_logout_view(LogoutView):
     template_name = 'login.html' 
-    next_page = reverse_lazy('UserAddView') # Replace with your actual login view name or URL
+    next_page = reverse_lazy('UserAddView') 
 
 # def my_logout_view(request):
 #     logout(request)
@@ -61,8 +61,16 @@ class EmployeeAddView(LoginRequiredMixin,FormView):
         u = form.save(commit=False)
         u.is_employee = True
         u.save()
-        return super().form_valid(form)    
+        return super().form_valid(form) 
+         
+    # def form_valid(self, form):
+    #     u = form.save(commit=False)
+    #     u.is_employee = True
+    #     u.save()
+    #     return JsonResponse({"success": True})
 
+    # def form_invalid(self, form):
+    #     return JsonResponse({"errors": form.errors})
 
 
 
@@ -87,7 +95,7 @@ def read(request):
 
 
 
-#toggle_active
+#toggle_active schedules
 
 @csrf_exempt
 def toggle_category_active(request, category_id):

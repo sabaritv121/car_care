@@ -72,8 +72,10 @@ class UserAddView(View):
             u = form.save(commit=False)
             u.is_user = True
             u.save()
-            return JsonResponse("True",safe=False)
+            # return JsonResponse("True",safe=False)
             # return redirect('home')
+            return JsonResponse({"success": True})
+       
         else:
             username = request.POST.get('uname')
             password = request.POST.get('pass')
@@ -88,6 +90,41 @@ class UserAddView(View):
                 elif user.is_employee:
                     return redirect('emp_base')    
         return render(request, self.template_name, {'form': form})
+
+# class UserAddView(View):
+#     template_name = 'login.html'
+#     form_class = LoginRegister
+
+#     def get(self, request):
+#         form = self.form_class() 
+#         return render(request, self.template_name, {'form': form})
+
+#     def post(self, request):
+#         form = self.form_class(request.POST)
+#         if form.is_valid():
+#             u = form.save(commit=False)
+#             u.is_user = True
+#             u.save()
+#             return JsonResponse({"success": True})
+#         else:
+#             username = request.POST.get('uname')
+#             password = request.POST.get('pass')
+#             user = authenticate(request, username=username, password=password)
+#             if user is not None:
+#                 login(request, user)
+#                 if user.is_staff:
+#                     return redirect('employeeadd')
+#                 elif user.is_user:
+#                     return redirect('Schedules_user')
+#                 elif user.is_employee:
+#                     return redirect('emp_base')
+#             else:
+#                 return JsonResponse({"errors": form.errors})
+#         return render(request, self.template_name, {'form': form})
+
+
+
+
 
 
 #username exist
@@ -121,7 +158,7 @@ class EmployeeList(LoginRequiredMixin,View):
 def delete_user_view(request,id):
     wm=Login.objects.get(id=id)
     wm.delete()
-    return redirect('employeeadd')
+    return redirect('userlist')
 
 
 

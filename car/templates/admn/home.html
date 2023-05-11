@@ -218,6 +218,24 @@
               }
             });
           
+
+              $(document).on('click', '.delete', function(){
+                  $id = $(this).attr('name');
+                  $.ajax({
+                      url: 'delete-wm' +"/"+ $id+"/",
+                      type: 'POST',
+                      data: {
+                          csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                      },
+                      success: function(){
+                          Read();
+                          alert("Deleted!");
+                      }
+                  });
+              });
+              
+         
+          
             function Read() {
               $.ajax({
                 async: true,

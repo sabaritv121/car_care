@@ -12,12 +12,19 @@
             <h1>User Home</h1>
 
             <a class="nav-link" href="{% url 'my_logout_view' %}"><i class="fa fa-power -off"></i>Logout</a>
+            <a class="nav-link" href="{% url 'Schedules_user' %}"><i class="fa fa-power -off"></i>home</a>
         </header>
         <hr>
         <a href="{% url 'appointments' %}" class="btn btn-danger">Appointment status</a>
         <main>
-            {% block content %}
-            {% endblock %}
+            {% if request.user.is_authenticated and request.user.is_user %}
+
+    
+                 {% block content %}
+
+                 {% endblock %}
+
+          {% endif %}
             
         </main>
         

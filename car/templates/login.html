@@ -188,7 +188,7 @@
                   required: true,
                   minlength: 4,
                   maxlength: 20,
-                  remote: { 
+                  {% comment %} remote: 
                     url: 'username_exists', // The URL to check if the username already exists
                     type: 'post',
                     data: {
@@ -196,7 +196,8 @@
                         return $('#id_username').val();
                       }
                     }
-                  } 
+                   }   {% endcomment %}
+                  
                 }, 
 
                 
@@ -221,7 +222,7 @@
                   required: 'Please enter a username.',
                   minlength: 'Username must be at least 4 characters long.',
                   maxlength: 'Username must be at most 20 characters long.',
-                  remote: 'Username already exists. Please choose a different username.', // The message to display if the username already exists 
+                  {% comment %} remote: 'Username already exists. Please choose a different username.', // The message to display if the username already exists  {% endcomment %}
                 },
                 password1: {
                   required: 'Please enter a password.',

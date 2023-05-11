@@ -119,8 +119,10 @@
               <i class="typcn typcn-bell mx-0"></i>
               <span class="count"></span>
             </a>
+            <a class="nav-link" href="{% url 'employeeadd' %}"><i class="fa fa-power -off"></i>home</a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+             
               <a class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
                   <div class="preview-icon bg-success">
@@ -482,10 +484,14 @@
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
+          {% if request.user.is_authenticated and request.user.is_staff %}
 
-          {% block content %}
+    
+                 {% block content %}
 
-          {% endblock %}
+                 {% endblock %}
+
+          {% endif %}
 
 <!--         <div class="card">
                     <div class="card-body">

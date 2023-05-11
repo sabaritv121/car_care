@@ -16,8 +16,14 @@
         <hr>
         <main>
             <a href="{% url 'Schedules' %}" class="btn btn-danger">Work requests</a>
-            {% block content %}
-            {% endblock %}
+            {% if request.user.is_authenticated and request.user.is_employee %}
+
+    
+                 {% block content %}
+
+                 {% endblock %}
+
+          {% endif %}
         </main>
         <hr>
     </div>
