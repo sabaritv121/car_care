@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.views.generic import ListView
 from django.http import  JsonResponse
 from django.shortcuts import get_object_or_404
+from datetime import datetime, timedelta
 
 class user_base(LoginRequiredMixin,View):
     login_url = 'home'
@@ -23,7 +24,12 @@ class Schedules_user(LoginRequiredMixin,ListView):
     redirect_field_name = 'home'
     raise_exception = True
     def get(self,request):
-        data = AppointmentSchedule.objects.filter(is_active = True)
+        dt = datetime.now()+ timedelta(days=1)
+        data = AppointmentSchedule.objects.filter(is_active = True,date=dt)
+
+      
+    # if date < datetime.date.today():
+    
         return render(request,'user/user_schedule.html',{'data':data})      
 
 

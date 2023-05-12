@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from car_app.models import Login,AppointmentSchedule
 from car_app.forms import LoginRegister,ScheduleAdd
 from django.views import View
+from django.views.generic import ListView
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.views.generic import FormView
@@ -10,6 +11,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt 
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
+from .filters import UserFilter
 
 # Create your views here.
 # def home(request):
@@ -93,70 +96,85 @@ class UserAddView(View):
                     return redirect('emp_base')    
         return render(request, self.template_name, {'form': form})
 
-# class UserAddView(View):
-#     template_name = 'login.html'
-#     form_class = LoginRegister
 
-#     def get(self, request):
-#         form = self.form_class() 
-#         return render(request, self.template_name, {'form': form})
+class UserListView(LoginRequiredMixin, ListView):
+    login_url = 'home'
+    redirect_field_name = 'home'
+    raise_exception = True
+    model = Login
+    context_object_name = 'data'
+    template_name = 'admn/userlist.html'
+    paginate_by = 4 # Change the number to set the number of items to display per page
+    
+    def get_queryset(self):
+        queryset = Login.objects.filter(is_user=True).order_by('-id')
+        return queryset
 
-#     def post(self, request):
-#         form = self.form_class(request.POST)
-#         if form.is_valid():
-#             u = form.save(commit=False)
-#             u.is_user = True
-#             u.save()
-#             return JsonResponse({"success": True})
-#         else:
-#             username = request.POST.get('uname')
-#             password = request.POST.get('pass')
-#             user = authenticate(request, username=username, password=password)
-#             if user is not None:
-#                 login(request, user)
-#                 if user.is_staff:
-#                     return redirect('employeeadd')
-#                 elif user.is_user:
-#                     return redirect('Schedules_user')
-#                 elif user.is_employee:
-#                     return redirect('emp_base')
-#             else:
-#                 return JsonResponse({"errors": form.errors})
-#         return render(request, self.template_name, {'form': form})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        data = self.get_queryset()
+        paginator = Paginator(data, self.paginate_by)
+        page = self.request.GET.get('page')
+        context['data'] = paginator.get_page(page)
+        context['UserFilter'] = UserFilter(self.request.GET, queryset=self.get_queryset())
+        return context
 
-
-
-
-
-
-#username exist
+# 
 
 #  ## user list   
 
-class UserListView(LoginRequiredMixin,View):
+# 
+
+
+# class UserListView(LoginRequiredMixin, ListView):
+#     login_url = 'home'
+#     redirect_field_name = 'home'
+#     raise_exception = True
+#     model = Login
+#     context_object_name = 'data'
+#     template_name = 'admn/userlist.html'
+#     paginate_by = 4 # Change the number to set the number of items to display per page
+    
+#     def get_queryset(self):
+#         queryset = Login.objects.filter(is_user=True).order_by('-id')
+#         return queryset
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         data = self.get_queryset()
+#         paginator = Paginator(data, self.paginate_by)
+#         page = self.request.GET.get('page')
+#         context['data'] = paginator.get_page(page)
+#         return context
+    
+
+# 
+
+class EmployeeList(LoginRequiredMixin, ListView):
     login_url = 'home'
     redirect_field_name = 'home'
     raise_exception = True
-    
-    def get(self, request):
-        data = Login.objects.filter(is_user=True)
-        return render(request, 'admn/userlist.html',{'data': data})
-        
+    context_object_name = 'data'
+    template_name = 'admn/emplist.html'
+    paginate_by = 5
 
-class EmployeeList(LoginRequiredMixin,View):
-    login_url = 'home'
-    redirect_field_name = 'home'
-    raise_exception = True
+    def get_queryset(self):
+        queryset = Login.objects.filter(is_employee=True).order_by('-id')
+        return queryset
 
-    def post(self,request):
-        data = Login.objects.filter(is_employee = True)
+    def post(self, request):
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, self.paginate_by)
+        page_number = request.POST.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'admn/emplist.html', {'page_obj': page_obj})
     
-        return render(request,'admn/emplist.html',{'data':data})
+        # return render(request,'admn/emplist.html',{'data':data})
 
 
 
 #delete
-
+@csrf_exempt
 def delete_user_view(request,id):
     wm=Login.objects.get(id=id)
     wm.delete()

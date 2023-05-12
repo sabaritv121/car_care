@@ -7,11 +7,14 @@ from django.http import JsonResponse
 from django.views.generic.edit import FormView
 from django.views.decorators.csrf import csrf_exempt
   
-from car_app.models import AppointmentSchedule
+from car_app.models import AppointmentSchedule,Login
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import logout
+from django.views.generic import ListView
+from django.core.paginator import Paginator
+from datetime import datetime, timedelta
 
 
 #BASE PAGE
@@ -25,27 +28,7 @@ class my_logout_view(LogoutView):
     template_name = 'login.html' 
     next_page = reverse_lazy('UserAddView') 
 
-# def my_logout_view(request):
-#     logout(request)
-#     return redirect('home')
-# class dashboard(View):
-
-
-        
-# def employee_add(request):
-#         form =EmployeeRegister()
-       
-#         if request.method =='POST':
-#             form = EmployeeRegister(request.POST)
-#             if form.is_valid():
-#                   u= form.save(commit=False)
-                
-#                   u.is_employee = True
-#                   u.save()
-                         
-                
-#                   return redirect('home')    
-#         return render(request,'admn/home.html',{'form':form})
+# 
     
 
 class EmployeeAddView(LoginRequiredMixin,FormView):
@@ -73,6 +56,7 @@ class EmployeeAddView(LoginRequiredMixin,FormView):
     #     return JsonResponse({"errors": form.errors})
 
 
+#scheduleadd
 
 class ScheduleAddView(LoginRequiredMixin,CreateView):
     login_url = '/home/'
@@ -88,8 +72,12 @@ class ScheduleAddView(LoginRequiredMixin,CreateView):
 
 
 #schedule view
+
 def read(request):
-    read = AppointmentSchedule.objects.order_by('-id')
+    data = datetime.now()+ timedelta(days=1)
+    # if date < datetime.date.today():
+    print(data)
+    read = AppointmentSchedule.objects.filter(date = data)
     context = {'read':read}
     return render(request, 'admn/result1.html', context)        
 
@@ -110,3 +98,36 @@ def toggle_category_active(request, category_id):
     return JsonResponse({'status': 'success', 'is_active': category.is_active})
 
 
+#employee list
+
+class EmpList(LoginRequiredMixin, ListView):
+    login_url = 'home'
+    redirect_field_name = 'home'
+    raise_exception = True
+    model = Login
+    context_object_name = 'data'
+    template_name = 'admn/employees.html'
+    paginate_by = 4 
+    
+    def get_queryset(self):
+        queryset = Login.objects.filter(is_user=True).order_by('-id')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        data = self.get_queryset()
+        paginator = Paginator(data, self.paginate_by)
+        page = self.request.GET.get('page')
+        context['data'] = paginator.get_page(page)
+        return context
+
+
+
+
+#search
+# class SearchView(View):
+#     def get(self, request):
+#         query = request.GET.get('q', '')
+#         results = Login.objects.filter(name__icontains=query)
+#         data = [{'id': result.id, 'name': result.name,'phone_number': result.phone_number} for result in results]
+#         return JsonResponse({'results': data})

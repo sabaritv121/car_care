@@ -16,6 +16,7 @@ urlpatterns = [
     # path('employee_add',admin_views.employee_add,name='employee_add'),
     path('employeeadd', admin_views.EmployeeAddView.as_view(), name='employeeadd'),
     path('userlist', views.UserListView.as_view(), name='userlist'),
+    path('EmpList',admin_views.EmpList.as_view(),name='EmpList'),
     path('EmployeeList',views.EmployeeList.as_view(),name='EmployeeList'),
     path('delete-wm/<int:id>/', views.delete_user_view, name='delete-wm'),
     path('category/<int:category_id>/toggle-active/', admin_views.toggle_category_active, name='toggle_category_active'),
@@ -25,6 +26,7 @@ urlpatterns = [
     path('read',admin_views.read,name='read'),
     path("ScheduleAddView",admin_views.ScheduleAddView.as_view(),name='ScheduleAddView'),
     path("my_logout_view",admin_views.my_logout_view.as_view(),name='my_logout_view'),
+    # path("SearchView",admin_views.SearchView.as_view(),name="SearchView"),
 
     #update
     
@@ -36,7 +38,7 @@ urlpatterns = [
     path('AcceptedSchedules',employee_views.AcceptedSchedules.as_view(),name='AcceptedSchedules'),
     # path('approve_appointment/<int:id>/',employee_views.approve_appointment, name='approve_appointment'),
     # path('approve_appointment/<int:id>/', employee_views.approve_appointment, name='approve_appointment'),
-    path('approve_appointment/<int:id>/', employee_views.approve_appointment, name='approve_appointment'),
+    path('approve_appointment/<int:id>/', employee_views.approve_appointment.as_view(), name='approve_appointment'),
 
 
 

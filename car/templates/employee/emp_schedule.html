@@ -11,17 +11,7 @@
           <strong class="card-title">WORK APPOINTMENTS </strong>
       </div>
       <br>
-<!--        <div class="row">-->
-<!--            <div class="col-lg-6 "></div>-->
-<!--            <div class="col-lg-6">-->
-<!--                <form method="get" class="form-inline " style="float:right;">-->
-<!--                    <div class="md-form my-0">-->
-<!--                        {{placeFilter.form }}-->
-<!--                        <button class="btn btn-primary mr-2" type="submit">Search</button>-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
+
 
       <div class="card-body">
           <table class="table table-striped">
@@ -76,6 +66,27 @@
               {% endfor %}
               </tbody>
           </table>
+
+
+<div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">&lsaquo; previous</a>
+                    {% endif %}
+            
+                    <span class="current-page">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+            
+                  {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next &rsaquo;</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %} 
+                </span>
+              </div>
+
+
       </div>
   </div>
 </div>
@@ -86,27 +97,7 @@
 <!-- add jQuery library -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- add a button to approve the appointment -->
-{% comment %} <button type="button" class="btn btn-primary" onclick="approveAppointment({{ appointment.id }})">Approve</button> {% endcomment %}
 
-<!-- add a script block to handle the AJAX call -->
-{% comment %} <script>
-function approveAppointment(id) {
-  $.ajax({
-    url: "'/approve_appointment/' + id ",
-    type: 'POST'
-    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
-    success: function(response) {
-      // handle success response here
-      console.log(response);
-    },
-    error: function(response) {
-      // handle error response here
-      console.log(response);
-    }
-  });
-}
-</script> {% endcomment %}
 
 
  <script>
