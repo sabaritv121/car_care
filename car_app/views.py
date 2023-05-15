@@ -36,19 +36,7 @@ def Login_view(request):
 
 
 
-# @csrf_exempt
-# def username_exists(request):
-#     if request.method == 'POST':
-#         username = request.POST.get('username')
-#         print(username)
-#         u=Login.objects.filter(username=username).exists()
-#         print("ys")
-#         if u == True:
-#             print("ysss")
-#             return JsonResponse({'exists': True})
-#         else:
-#             print("noo")
-#             return JsonResponse({'exists': False})
+
 @csrf_exempt
 def username_exists(request):
     if request.method == 'POST':

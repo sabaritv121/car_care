@@ -39,6 +39,7 @@ urlpatterns = [
     # path('approve_appointment/<int:id>/',employee_views.approve_appointment, name='approve_appointment'),
     # path('approve_appointment/<int:id>/', employee_views.approve_appointment, name='approve_appointment'),
     path('approve_appointment/<int:id>/', employee_views.approve_appointment.as_view(), name='approve_appointment'),
+    path('edit/<int:id>/',admin_views.edit,name='edit'),
 
 
 

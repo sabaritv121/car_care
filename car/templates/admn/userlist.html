@@ -52,11 +52,11 @@
                     <td>{{n.username}}</td>
                     <td>{{n.phone_number}}</td>
                     
-<!--                    <td>-->
-<!--                        <a href="#">-->
-<!--                            <button type="button" class="btn btn-primary">Update</button>-->
-<!--                        </a>-->
-<!--                    </td>-->
+                 {% comment %} <td>
+                       <a href="#">
+                           <button type="button" class="btn btn-primary">Update</button>
+                     </a>
+                  </td> {% endcomment %}
 
                     <td>
                         <form action="{% url 'delete-wm' n.id %}" method="post" style="display: inline;"

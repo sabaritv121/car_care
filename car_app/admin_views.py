@@ -131,3 +131,9 @@ class EmpList(LoginRequiredMixin, ListView):
 #         results = Login.objects.filter(name__icontains=query)
 #         data = [{'id': result.id, 'name': result.name,'phone_number': result.phone_number} for result in results]
 #         return JsonResponse({'results': data})
+
+
+
+def edit(request,id):
+    data = Login.objects.get(id=id)
+    return render(request,'admn/edit.html',{'data':data})
