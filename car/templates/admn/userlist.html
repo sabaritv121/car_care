@@ -52,11 +52,12 @@
                     <td>{{n.username}}</td>
                     <td>{{n.phone_number}}</td>
                     
-                 {% comment %} <td>
-                       <a href="#">
+               <td> 
+                        <a href="{% url 'edit' n.id %}">
                            <button type="button" class="btn btn-primary">Update</button>
-                     </a>
-                  </td> {% endcomment %}
+                     </a> 
+
+                  </td>
 
                     <td>
                         <form action="{% url 'delete-wm' n.id %}" method="post" style="display: inline;"
@@ -117,6 +118,12 @@
                   </div>
     </div>
 </div>
+
+
+
+
+
+
 <!-- Button trigger modal -->
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

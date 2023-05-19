@@ -52,3 +52,11 @@ class ScheduleAdd(forms.ModelForm):
             raise forms.ValidationError("Date can't be in the past")
         return cleaned_data
       
+
+
+class UpdateForm(forms.ModelForm):
+    
+
+    class Meta:
+        model = Login
+        fields = ('username','name','phone_number')      

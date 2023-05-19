@@ -2,7 +2,7 @@
 from django.shortcuts import render,redirect
 from django.views import View
 from django.views.generic.edit import CreateView
-from car_app.forms import EmployeeRegister,ScheduleAdd
+from car_app.forms import EmployeeRegister,ScheduleAdd,UpdateForm
 from django.http import JsonResponse
 from django.views.generic.edit import FormView
 from django.views.decorators.csrf import csrf_exempt
@@ -135,5 +135,50 @@ class EmpList(LoginRequiredMixin, ListView):
 
 
 def edit(request,id):
-    data = Login.objects.get(id=id)
-    return render(request,'admn/edit.html',{'data':data})
+    obj = Login.objects.get(id=id)
+    print(obj)
+    print(obj.name)
+    print(obj.phone_number)
+
+    form = UpdateForm()
+
+    context = {
+        'obj': obj,
+        'form': form,
+    }
+    return render(request,'admn/edit.html',context)
+
+
+   
+def post_detail_data_view(request, pk):
+    
+        obj = Login.objects.get(pk=pk)
+        data = {
+            'id': obj.id,
+            'username': obj.username,
+            'phone_number': obj.phone_number,
+            'name': obj.name,
+            
+            
+        }
+        return JsonResponse({'data': data})   
+
+
+
+def update_post(request, pk):
+    obj = Login.objects.get(pk=pk)
+   
+    if request.method=='POST':
+        new_title = request.POST.get('title')
+        print(new_title)
+        new_name= request.POST.get('name')
+        new_phone = request.POST.get('phone')
+        obj.username = new_title
+        obj.name = new_name
+        obj.phone_number = new_phone
+        obj.save()
+        return JsonResponse({
+            'title': new_title,
+            'name': new_name,
+            'phone':new_phone
+        })        

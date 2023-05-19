@@ -30,7 +30,7 @@ urlpatterns = [
 
     #update
     
-
+     path('edit/<pk>/update/',admin_views.update_post,name='post-update'),
 
     # employee
     path("emp_base",employee_views.Emp_base.as_view(),name='emp_base'),
@@ -40,7 +40,9 @@ urlpatterns = [
     # path('approve_appointment/<int:id>/', employee_views.approve_appointment, name='approve_appointment'),
     path('approve_appointment/<int:id>/', employee_views.approve_appointment.as_view(), name='approve_appointment'),
     path('edit/<int:id>/',admin_views.edit,name='edit'),
+    path('edit/<pk>/data/',admin_views.post_detail_data_view,name='post_detail_data_view'),
 
+    path('pdf/', employee_views.PDFView.as_view(), name='pdf_view'),
 
 
 

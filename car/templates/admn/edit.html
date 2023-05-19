@@ -17,14 +17,11 @@
         <hr>
         <main>
             
-           
+{% comment %} {{obj.username}}<br>
+{{obj.name}}<br>
+{{obj.phone_number}} {% endcomment %}
 
-    
-                 {% block content %}
 
-                 {% endblock %}
-
-          
         </main>
         <hr>
     </div>
@@ -37,16 +34,14 @@
 
             {% endblock %} {% endcomment %}
 
-</body>
-</html>
-
-
 
 
 
 
 
     
+            
+           
     
 
 
@@ -70,9 +65,9 @@
                     <div id="alert-box"></div>
                     <form id="update-form">
                         {% csrf_token %}
-                    {% comment %} {% for i  in data %} {% endcomment %}
-                             {{i.username}}
-                    {% comment %} {% endfor %}          {% endcomment %}
+                  
+                            {{form|crispy}}
+                
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">close</button>
                             <button type="submit" class="btn btn-success">update</button>
@@ -87,5 +82,80 @@
 
 
 
+    <script>
 
-   
+        const updateForm = document.getElementById('update-form')
+        const titleInput = document.getElementById('id_username')
+        const csrf = document.getElementsByName('csrfmiddlewaretoken')
+        const nameInput = document.getElementById('id_name')
+        const phoneInput = document.getElementById('id_phone_number')
+        const updateUrl =window.location.href + 'update/'
+        console.log(phoneInput)
+        const upUrl = window.location.href 
+        url= window.location.href + 'data/'
+        console.log(url)
+        
+        
+        {% comment %} #getdata {% endcomment %}
+        
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(response){
+                console.log(response)
+                const data = response.data
+        
+                
+        // get the data form
+               
+          
+        // get the data
+        
+                titleInput.value = data.username
+                nameInput.value = data.name
+                phoneInput.value = data.phone_number
+                
+        
+               
+            },
+            error: function(error){
+                console.log(error)
+            }
+        })
+        // update
+
+updateForm.addEventListener('submit', e=>{
+    e.preventDefault()
+
+    const title = document.getElementById('username')
+    const name = document.getElementById('name')
+    const phone = document.getElementById('phone_number')
+
+    $.ajax({
+        type: 'POST',
+        url: updateUrl,
+        data: {
+            'csrfmiddlewaretoken': csrf[0].value,
+            'title': titleInput.value,
+            'name': nameInput.value,
+            'phone': phoneInput.value,
+        },
+        success: function(response){
+            console.log(response)
+            {% comment %} handleAlerts('success', 'data has been updated') {% endcomment %}
+            alert("data updated")
+           
+
+        },
+        error: function(error){
+            console.log(error)
+        }
+    })
+
+})
+
+
+
+        </script>
+</body>
+</html>

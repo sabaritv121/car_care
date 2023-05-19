@@ -1,0 +1,40 @@
+{% extends 'employee/base.html'%}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <strong class="card-title">WORK APPOINTMENTS </strong>
+    </div>
+    <br>
+
+
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">SI No</th>
+                <th scope="col">User</th>
+                <th scope="col">Date</th>
+
+                <th scope="col">Start Time</th>
+                <th scope="col">End Time</th>
+                
+               
+
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for n in data %}
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{n.user}}</td>
+                <td>{{n.schedule.date}}</td>
+
+                <td>{{n.schedule.start_time}}</td>
+                <td>{{n.schedule.end_time}}</td>
+
+            </tr>
+            {% endfor %}
+
+ 
+{% endblock %}

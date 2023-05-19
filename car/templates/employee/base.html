@@ -16,6 +16,11 @@
         <hr>
         <main>
             <a href="{% url 'Schedules' %}" class="btn btn-danger">Work requests</a>
+
+            <a href="{% url 'AcceptedSchedules' %}" class="btn btn-danger">Works</a>
+
+            <a href="{% url 'pdf_view' %}" class="btn btn-danger">download pdf</a>
+
             {% if request.user.is_authenticated and request.user.is_employee %}
 
     

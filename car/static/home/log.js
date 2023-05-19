@@ -70,6 +70,7 @@
                     // Handle the server's response here
                     alert('Form submitted successfully!');
                     $('#exampleModal').modal('hide');
+                   
                
                   },
                   error: function(xhr, status, error) {
